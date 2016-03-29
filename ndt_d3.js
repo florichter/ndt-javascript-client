@@ -41,7 +41,7 @@ NDTmeter.prototype.update_display = function (status, information) {
 };
 
 NDTmeter.prototype.create = function () {
-
+	
     var width = d3.select(this.body_element).style("width").replace(/px/, '');
     var height = d3.select(this.body_element).style("height").replace(/px/, '');
     var twoPi = 2 * Math.PI;
@@ -49,6 +49,7 @@ NDTmeter.prototype.create = function () {
     var outerRad = (width * 0.37);
 
     var svg = d3.select(this.body_element).append("svg")
+    	.attr("id", "Anzeige")
         .attr("width", width)
         .attr("height", height)
         .append("g")
@@ -57,10 +58,13 @@ NDTmeter.prototype.create = function () {
 		//TODO
 	var div = d3.select(this.body_element).append("div")
 	.attr("id", "resultText")
-	.text("Ergbniss:");
-	
+	.text("Ergbnis:");	
 	 this.resultText = div.append("div");
-//TODO
+	 
+
+		 
+	 
+	 //TODO
     var gradient = svg
         .append("linearGradient")
         .attr("id", "gradient")
@@ -171,6 +175,7 @@ NDTmeter.prototype.onfinish = function (passed_results) {
 	     this.resultText.append("text")
 				.attr("class", "result_ALL")   
                 .text(JSON.stringify(passed_results, function(key, value) {
+                	var key = key;
 					var result = value;
 					return result;
 				}, 4));
@@ -189,6 +194,7 @@ NDTmeter.prototype.onerror = function (error_message) {
 };
 
 NDTmeter.prototype.reset_meter = function () {
+	
     d3.selectAll('#progress-meter text').remove();
 	d3.selectAll('#resultText text').remove();
 

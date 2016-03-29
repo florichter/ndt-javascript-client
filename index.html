@@ -8,14 +8,25 @@
 		<script src="http://d3js.org/d3.v3.min.js"></script>
 		<script src="ndt_d3.js"></script>
 		<script src="ndt-client.js"></script>
+		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 		<script>
-	 		var server = "ndt.iupui.mlab2.ham01.measurement-lab.org";
+	 		
+	 		
+	 		//var server = "ndt.iupui.mlab2.ham01.measurement-lab.org";
 	
 	  		var port = "3001";
 	   	 	var path = "/ndt_protocol";
             var NDT_meter, NDT_client;
             
-            function NDTmeter_setup() {
+            function NDTmeter_setup(server) {
+            	var parent = document.getElementById("container");
+            	if(parent.hasChildNodes)
+				var child = document.getElementById("svg");
+				parent.removeChild(child);
+				var x = document.createElement("div");
+				x.setAttribute("id", "svg");  
+				parent.appendChild(x);
+				
                 NDT_meter = new NDTmeter('#svg');
                 NDT_client = new NDTjs(server, port, path, NDT_meter);
 				NDT_client.logger(true);
@@ -23,14 +34,68 @@
                     NDT_client.start_test();
                 });
             }
-     
+            function toJSON() {
+  $(function(){
+  var headers=[ ""], rows={}
+  $.each(data.jsondata,function(clientIdx,item){
+      headers.push(item.label );
+      $.each( item.data,function(i,arr){
+        if( !rows[arr[0]]){
+        
+         rows[arr[0]]=createPlaceHolderArray( data.jsondata.length);
+        }
+       
+        rows[arr[0]][clientIdx]=arr[1];
+      })
+  })
+  $('body').append('<pre>'+ JSON.stringify(rows, null, ' '));
+  
+  var rowHtml='<tr><th>'+headers.join('</th><th>')+'</th></tr>';
+  $.each(rows,function(key, arr){
+    rowHtml+='<tr><td>'+key+'</td>';
+    rowHtml +='<td>'+arr.join('</td><td>')+'</td></tr>';
+    
+  })
+  
+  $('#table').html(rowHtml)
+});
+
+function createPlaceHolderArray( numCols){
+  var placeholder='N/A', res=[];
+  while(numCols){
+    res.push(placeholder);
+    numCols--;
+  }
+  return res;
+  
+}
+            
+            }
+            
         </script>
 	</head>
-	<body onload="NDTmeter_setup()">
-		<div id="container">
-			<div id="svg">
+	<!-- <body onload="NDTmeter_setup()"> -->
+		<body>
+				<form action="#"> 
+					<select id="Server" onchange="NDTmeter_setup(this.value)">
+					   <option selected value="ndt.iupui.mlab2.ham01.measurement-lab.org">Hamburg</option>
+					   <option value="ndt.iupui.mlab2.syd01.measurement-lab.org">Sydney,AU</option>
+					   <option value="ndt.iupui.mlab1.hnd01.measurement-lab.org">Tokyo,JP</option>
+					   <option value="ndt.iupui.mlab1.jnb01.measurement-lab.org">Johannesburg,ZA</option>
+					   <option value="ndt.iupui.mlab1.bog01.measurement-lab.org">Bogota,CO</option>
+					   <option value="ndt.iupui.mlab1.yyz01.measurement-lab.org">Toronto,CA</option>
+					   <option value="ndt.iupui.mlab1.mnl01.measurement-lab.org">Manila,PH</option>
+					   <option value="ndt.iupui.mlab1.tun01.measurement-lab.org">Tunis,TN</option>
+					   <option value="ndt.iupui.mlab1.ams01.measurement-lab.org">Amsterdam,NL</option>
+					</select>
+		    	</form> 
+		    	<button onclick="toJSON()">Test</button>
+		 
+			<div id="container">
+				<div id="svg">
+				</div>
 			</div>
-		</div>
+		
 	</body>
 </html>
 
