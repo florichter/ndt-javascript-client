@@ -33,46 +33,8 @@
                 NDT_meter.meter.on("click", function () {
                     NDT_client.start_test();
                 });
-            }
-            function toJSON() {
-  $(function(){
-  var headers=[ ""], rows={}
-  $.each(data.jsondata,function(clientIdx,item){
-      headers.push(item.label );
-      $.each( item.data,function(i,arr){
-        if( !rows[arr[0]]){
-        
-         rows[arr[0]]=createPlaceHolderArray( data.jsondata.length);
-        }
-       
-        rows[arr[0]][clientIdx]=arr[1];
-      })
-  })
-  $('body').append('<pre>'+ JSON.stringify(rows, null, ' '));
-  
-  var rowHtml='<tr><th>'+headers.join('</th><th>')+'</th></tr>';
-  $.each(rows,function(key, arr){
-    rowHtml+='<tr><td>'+key+'</td>';
-    rowHtml +='<td>'+arr.join('</td><td>')+'</td></tr>';
-    
-  })
-  
-  $('#table').html(rowHtml)
-});
-
-function createPlaceHolderArray( numCols){
-  var placeholder='N/A', res=[];
-  while(numCols){
-    res.push(placeholder);
-    numCols--;
-  }
-  return res;
-  
-}
-            
-            }
-            
-        </script>
+            }            
+    </script>
 	</head>
 	<!-- <body onload="NDTmeter_setup()"> -->
 		<body>
@@ -87,9 +49,11 @@ function createPlaceHolderArray( numCols){
 					   <option value="ndt.iupui.mlab1.mnl01.measurement-lab.org">Manila,PH</option>
 					   <option value="ndt.iupui.mlab1.tun01.measurement-lab.org">Tunis,TN</option>
 					   <option value="ndt.iupui.mlab1.ams01.measurement-lab.org">Amsterdam,NL</option>
+					   <option value="ndt.fh-luebeck.de">ndt.fh-luebeck.de</option>
+					   <option value="192.168.2.1">TestServer</option>
 					</select>
 		    	</form> 
-		    	<button onclick="toJSON()">Test</button>
+		    	
 		 
 			<div id="container">
 				<div id="svg">
